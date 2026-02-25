@@ -1,0 +1,38 @@
+Q.2- Find intersection of two arrays including duplicate elements.
+#include <stdio.h>
+
+int main()
+{
+    int n1, n2;
+    scanf("%d", &n1);
+
+    int nums1[n1];
+    for(int i = 0; i < n1; i++)
+        scanf("%d", &nums1[i]);
+
+    scanf("%d", &n2);
+
+    int nums2[n2];
+    for(int i = 0; i < n2; i++)
+        scanf("%d", &nums2[i]);
+
+    int visited[n2];
+
+    for(int i = 0; i < n2; i++)
+        visited[i] = 0;
+
+    for(int i = 0; i < n1; i++)
+    {
+        for(int j = 0; j < n2; j++)
+        {
+            if(nums1[i] == nums2[j] && visited[j] == 0)
+            {
+                printf("%d ", nums1[i]);
+                visited[j] = 1;
+                break;
+            }
+        }
+    }
+
+    return 0;
+}

@@ -1,0 +1,24 @@
+Q.2- Find the missing number from 1 to n in an array of size n-1
+#include <stdio.h>
+
+int main()
+{
+    int n;
+    scanf("%d", &n);
+
+    int arr[n];
+    int sum = 0;
+
+    for(int i = 0; i < n; i++)
+    {
+        scanf("%d", &arr[i]);
+        sum += arr[i];
+    }
+
+    int total = (n + 1) * (n + 2) / 2;
+    int missing = total - sum;
+
+    printf("%d", missing);
+
+    return 0;
+}

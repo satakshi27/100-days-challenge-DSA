@@ -1,0 +1,36 @@
+Q.2- Reverse a character array in-place using constant extra memory.
+#include <stdio.h>
+
+void reverse(char s[], int n)
+{
+    int left = 0, right = n - 1;
+    char temp;
+
+    while(left < right)
+    {
+        temp = s[left];
+        s[left] = s[right];
+        s[right] = temp;
+
+        left++;
+        right--;
+    }
+}
+
+int main()
+{
+    int n;
+    scanf("%d", &n);
+
+    char s[n];
+
+    for(int i = 0; i < n; i++)
+        scanf(" %c", &s[i]);
+
+    reverse(s, n);
+
+    for(int i = 0; i < n; i++)
+        printf("%c ", s[i]);
+
+    return 0;
+}

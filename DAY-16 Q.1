@@ -1,0 +1,32 @@
+Q.1- Write a C program to count the frequency of each distinct element in an array.
+#include <stdio.h>
+
+int main() {
+    int n;
+    int a[100], visited[100] = {0};
+    int i, j, count;
+
+    scanf("%d", &n);
+
+    for(i = 0; i < n; i++)
+        scanf("%d", &a[i]);
+
+    for(i = 0; i < n; i++) {
+
+        if(visited[i] == 1)
+            continue;
+
+        count = 1;
+
+        for(j = i + 1; j < n; j++) {
+            if(a[i] == a[j]) {
+                count++;
+                visited[j] = 1;
+            }
+        }
+
+        printf("%d:%d ", a[i], count);
+    }
+
+    return 0;
+}

@@ -1,0 +1,28 @@
+Q.2- Write a C program to find an array such that each element is the product of all other elements except itself without using division.
+#include <stdio.h>
+
+int main() {
+    int n;
+    int nums[100000], answer[100000];
+    int i;
+
+    scanf("%d", &n);
+
+    for(i = 0; i < n; i++)
+        scanf("%d", &nums[i]);
+
+    answer[0] = 1;
+    for(i = 1; i < n; i++)
+        answer[i] = answer[i - 1] * nums[i - 1];
+
+    int suffix = 1;
+    for(i = n - 1; i >= 0; i--) {
+        answer[i] = answer[i] * suffix;
+        suffix *= nums[i];
+    }
+
+    for(i = 0; i < n; i++)
+        printf("%d ", answer[i]);
+
+    return 0;
+}

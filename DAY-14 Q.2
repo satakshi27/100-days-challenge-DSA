@@ -1,0 +1,42 @@
+Q.2- Write a C program to rotate a given n×n matrix by 90 degrees clockwise in-place (without using another matrix).
+#include <stdio.h>
+
+int main() {
+    int n;
+    int a[20][20];
+    int i, j, temp;
+
+    scanf("%d", &n);
+
+    // Input matrix
+    for(i = 0; i < n; i++)
+        for(j = 0; j < n; j++)
+            scanf("%d", &a[i][j]);
+
+    // Step 1: Transpose the matrix
+    for(i = 0; i < n; i++) {
+        for(j = i + 1; j < n; j++) {
+            temp = a[i][j];
+            a[i][j] = a[j][i];
+            a[j][i] = temp;
+        }
+    }
+
+    // Step 2: Reverse each row
+    for(i = 0; i < n; i++) {
+        for(j = 0; j < n / 2; j++) {
+            temp = a[i][j];
+            a[i][j] = a[i][n - j - 1];
+            a[i][n - j - 1] = temp;
+        }
+    }
+
+    // Output rotated matrix
+    for(i = 0; i < n; i++) {
+        for(j = 0; j < n; j++)
+            printf("%d ", a[i][j]);
+        printf("\n");
+    }
+
+    return 0;
+}

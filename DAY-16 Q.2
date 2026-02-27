@@ -1,0 +1,43 @@
+Q.2- Write a C program to rotate an array to the right by 𝑘 position.
+#include <stdio.h>
+
+void reverse(int a[], int start, int end) {
+    int temp;
+    while(start < end) {
+        temp = a[start];
+        a[start] = a[end];
+        a[end] = temp;
+        start++;
+        end--;
+    }
+}
+
+int main() {
+    int n, k;
+    int a[100000];
+    int i;
+
+    scanf("%d", &n);
+
+    for(i = 0; i < n; i++)
+        scanf("%d", &a[i]);
+
+    scanf("%d", &k);
+
+    k = k % n;   // handle large k
+
+    // Step 1: Reverse entire array
+    reverse(a, 0, n - 1);
+
+    // Step 2: Reverse first k elements
+    reverse(a, 0, k - 1);
+
+    // Step 3: Reverse remaining elements
+    reverse(a, k, n - 1);
+
+    // Output
+    for(i = 0; i < n; i++)
+        printf("%d ", a[i]);
+
+    return 0;
+}

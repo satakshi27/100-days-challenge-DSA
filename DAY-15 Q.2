@@ -1,0 +1,62 @@
+Q.2- Write a C program to modify a matrix such that if any element is 0, its entire row and column are set to 0.
+#include <stdio.h>
+
+int main() {
+    int m, n;
+    int a[200][200];
+    int i, j;
+    int firstRow = 0, firstCol = 0;
+
+    scanf("%d %d", &m, &n);
+
+    for(i = 0; i < m; i++)
+        for(j = 0; j < n; j++)
+            scanf("%d", &a[i][j]);
+
+    // Check first column
+    for(i = 0; i < m; i++)
+        if(a[i][0] == 0)
+            firstCol = 1;
+
+    // Check first row
+    for(j = 0; j < n; j++)
+        if(a[0][j] == 0)
+            firstRow = 1;
+
+    // Use first row & column as markers
+    for(i = 1; i < m; i++) {
+        for(j = 1; j < n; j++) {
+            if(a[i][j] == 0) {
+                a[i][0] = 0;
+                a[0][j] = 0;
+            }
+        }
+    }
+
+    // Set elements to zero
+    for(i = 1; i < m; i++) {
+        for(j = 1; j < n; j++) {
+            if(a[i][0] == 0 || a[0][j] == 0)
+                a[i][j] = 0;
+        }
+    }
+
+    // Update first column
+    if(firstCol)
+        for(i = 0; i < m; i++)
+            a[i][0] = 0;
+
+    // Update first row
+    if(firstRow)
+        for(j = 0; j < n; j++)
+            a[0][j] = 0;
+
+    // Print result
+    for(i = 0; i < m; i++) {
+        for(j = 0; j < n; j++)
+            printf("%d ", a[i][j]);
+        printf("\n");
+    }
+
+    return 0;
+}

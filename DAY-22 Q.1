@@ -1,0 +1,41 @@
+Q.1- Create a Singly Linked List from n integers and count the number of nodes in the list.
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *next;
+};
+
+int main() {
+    int n, val, count = 0;
+    struct node *head = NULL, *temp = NULL, *newnode;
+
+    scanf("%d", &n);
+
+    for(int i = 0; i < n; i++) {
+        scanf("%d", &val);
+
+        newnode = (struct node*)malloc(sizeof(struct node));
+        newnode->data = val;
+        newnode->next = NULL;
+
+        if(head == NULL) {
+            head = newnode;
+            temp = newnode;
+        } else {
+            temp->next = newnode;
+            temp = newnode;
+        }
+    }
+
+    temp = head;
+    while(temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+
+    printf("%d", count);
+
+    return 0;
+}

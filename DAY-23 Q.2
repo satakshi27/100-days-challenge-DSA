@@ -1,0 +1,66 @@
+Q.2- Given the head of a linked list, determine if the linked list contains a cycle.
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Create linked list for input (pos = index of cycle, -1 if none)
+struct Node* createList(int n, int pos) {
+    struct Node *head = NULL, *temp = NULL, *newNode, *cycleNode = NULL;
+    int val;
+
+    for(int i = 0; i < n; i++) {
+        scanf("%d", &val);
+        newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->data = val;
+        newNode->next = NULL;
+
+        if(head == NULL) {
+            head = newNode;
+            temp = newNode;
+        } else {
+            temp->next = newNode;
+            temp = newNode;
+        }
+
+        if(i == pos)
+            cycleNode = newNode;
+    }
+
+    if(pos != -1)
+        temp->next = cycleNode; // create cycle
+
+    return head;
+}
+
+bool hasCycle(struct Node* head) {
+    struct Node *slow = head, *fast = head;
+
+    while(fast != NULL && fast->next != NULL) {
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if(slow == fast)
+            return true;
+    }
+    return false;
+}
+
+int main() {
+    int n, pos;
+    scanf("%d", &n);
+    scanf("%d", &pos);
+
+    struct Node* head = createList(n, pos);
+
+    if(hasCycle(head))
+        printf("true\n");
+    else
+        printf("false\n");
+
+    return 0;
+}

@@ -1,0 +1,28 @@
+Q.2- Find the starting node of a cycle in a linked list. If no cycle exists, return NULL.
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node* detectCycle(struct Node* head) {
+    struct Node *slow = head, *fast = head;
+
+    while (fast != NULL && fast->next != NULL) {
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if (slow == fast) {
+            slow = head;
+            while (slow != fast) {
+                slow = slow->next;
+                fast = fast->next;
+            }
+            return slow;
+        }
+    }
+
+    return NULL;
+}

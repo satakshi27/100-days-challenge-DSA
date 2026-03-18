@@ -1,0 +1,96 @@
+Q.2- Design a linked list class with operations: get, add at head, add at tail, add at index, and delete at index.#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int val;
+    struct Node* next;
+};
+
+struct MyLinkedList {
+    struct Node* head;
+    int size;
+};
+
+struct MyLinkedList* create() {
+    struct MyLinkedList* obj = (struct MyLinkedList*)malloc(sizeof(struct MyLinkedList));
+    obj->head = NULL;
+    obj->size = 0;
+    return obj;
+}
+
+int get(struct MyLinkedList* obj, int index) {
+    if (index < 0 || index >= obj->size)
+        return -1;
+
+    struct Node* temp = obj->head;
+    for (int i = 0; i < index; i++)
+        temp = temp->next;
+
+    return temp->val;
+}
+
+void addAtHead(struct MyLinkedList* obj, int val) {
+    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+    node->val = val;
+    node->next = obj->head;
+    obj->head = node;
+    obj->size++;
+}
+
+void addAtTail(struct MyLinkedList* obj, int val) {
+    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+    node->val = val;
+    node->next = NULL;
+
+    if (obj->head == NULL) {
+        obj->head = node;
+    } else {
+        struct Node* temp = obj->head;
+        while (temp->next != NULL)
+            temp = temp->next;
+        temp->next = node;
+    }
+    obj->size++;
+}
+
+void addAtIndex(struct MyLinkedList* obj, int index, int val) {
+    if (index < 0 || index > obj->size)
+        return;
+
+    if (index == 0) {
+        addAtHead(obj, val);
+        return;
+    }
+
+    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+    node->val = val;
+
+    struct Node* temp = obj->head;
+    for (int i = 0; i < index - 1; i++)
+        temp = temp->next;
+
+    node->next = temp->next;
+    temp->next = node;
+    obj->size++;
+}
+
+void deleteAtIndex(struct MyLinkedList* obj, int index) {
+    if (index < 0 || index >= obj->size)
+        return;
+
+    struct Node* temp = obj->head;
+
+    if (index == 0) {
+        obj->head = temp->next;
+        free(temp);
+    } else {
+        struct Node* prev;
+        for (int i = 0; i < index; i++) {
+            prev = temp;
+            temp = temp->next;
+        }
+        prev->next = temp->next;
+        free(temp);
+    }
+    obj->size--;
+}

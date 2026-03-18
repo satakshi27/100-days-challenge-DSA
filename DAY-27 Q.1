@@ -1,0 +1,76 @@
+Q.1- Find the intersection node of two linked lists. If no intersection exists, print "No Intersection".
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node* insert(struct Node* head, int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->next = NULL;
+
+    if (head == NULL)
+        return newNode;
+
+    struct Node* temp = head;
+    while (temp->next != NULL)
+        temp = temp->next;
+
+    temp->next = newNode;
+    return head;
+}
+
+int getLength(struct Node* head) {
+    int len = 0;
+    while (head != NULL) {
+        len++;
+        head = head->next;
+    }
+    return len;
+}
+
+struct Node* advance(struct Node* head, int diff) {
+    while (diff--)
+        head = head->next;
+    return head;
+}
+
+int main() {
+    int n, m, value;
+    struct Node *head1 = NULL, *head2 = NULL;
+
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &value);
+        head1 = insert(head1, value);
+    }
+
+    scanf("%d", &m);
+    for (int i = 0; i < m; i++) {
+        scanf("%d", &value);
+        head2 = insert(head2, value);
+    }
+
+    int len1 = getLength(head1);
+    int len2 = getLength(head2);
+
+    if (len1 > len2)
+        head1 = advance(head1, len1 - len2);
+    else
+        head2 = advance(head2, len2 - len1);
+
+    while (head1 != NULL && head2 != NULL) {
+        if (head1->data == head2->data) {
+            printf("%d", head1->data);
+            return 0;
+        }
+        head1 = head1->next;
+        head2 = head2->next;
+    }
+
+    printf("No Intersection");
+    return 0;
+}

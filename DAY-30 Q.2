@@ -1,0 +1,89 @@
+Q.2-Add two numbers represented by linked lists where digits are stored in forward order and return the result as a linked list.
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node* insert(struct Node* head, int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->next = NULL;
+
+    if (head == NULL)
+        return newNode;
+
+    struct Node* temp = head;
+    while (temp->next != NULL)
+        temp = temp->next;
+
+    temp->next = newNode;
+    return head;
+}
+
+struct Node* addTwoNumbers(struct Node* l1, struct Node* l2) {
+    int s1[100], s2[100];
+    int top1 = -1, top2 = -1;
+
+    while (l1 != NULL) {
+        s1[++top1] = l1->data;
+        l1 = l1->next;
+    }
+
+    while (l2 != NULL) {
+        s2[++top2] = l2->data;
+        l2 = l2->next;
+    }
+
+    int carry = 0;
+    struct Node* result = NULL;
+
+    while (top1 >= 0 || top2 >= 0 || carry) {
+        int sum = carry;
+
+        if (top1 >= 0) sum += s1[top1--];
+        if (top2 >= 0) sum += s2[top2--];
+
+        struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+        newNode->data = sum % 10;
+        newNode->next = result;
+        result = newNode;
+
+        carry = sum / 10;
+    }
+
+    return result;
+}
+
+void printList(struct Node* head) {
+    struct Node* temp = head;
+    while (temp != NULL) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+}
+
+int main() {
+    int n, m, value;
+    struct Node *l1 = NULL, *l2 = NULL;
+
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &value);
+        l1 = insert(l1, value);
+    }
+
+    scanf("%d", &m);
+    for (int i = 0; i < m; i++) {
+        scanf("%d", &value);
+        l2 = insert(l2, value);
+    }
+
+    struct Node* result = addTwoNumbers(l1, l2);
+
+    printList(result);
+
+    return 0;
+}

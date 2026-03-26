@@ -1,0 +1,38 @@
+Q.2-Given CPU tasks (A–Z) and cooling time n, find the minimum intervals needed to finish all tasks such that the same task repeats only after at least n intervals.
+#include <stdio.h>
+
+int leastInterval(char tasks[], int size, int n) {
+    int freq[26] = {0};
+
+    for (int i = 0; i < size; i++) {
+        freq[tasks[i] - 'A']++;
+    }
+
+    int maxFreq = 0;
+    for (int i = 0; i < 26; i++) {
+        if (freq[i] > maxFreq)
+            maxFreq = freq[i];
+    }
+
+    int countMax = 0;
+    for (int i = 0; i < 26; i++) {
+        if (freq[i] == maxFreq)
+            countMax++;
+    }
+
+    int partCount = maxFreq - 1;
+    int partLength = n + 1;
+    int minTime = partCount * partLength + countMax;
+
+    return (size > minTime) ? size : minTime;
+}
+
+int main() {
+    char tasks[] = {'A','A','A','B','B','B'};
+    int n = 2;
+    int size = sizeof(tasks)/sizeof(tasks[0]);
+
+    printf("%d", leastInterval(tasks, size, n));
+
+    return 0;
+}

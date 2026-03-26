@@ -1,0 +1,62 @@
+Q.2- Return the level order traversal of a binary tree (level by level).#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *left, *right;
+};
+
+struct node* createNode(int val) {
+    struct node* temp = (struct node*)malloc(sizeof(struct node));
+    temp->data = val;
+    temp->left = temp->right = NULL;
+    return temp;
+}
+
+struct node* queue[2000];
+int front = 0, rear = 0;
+
+void enqueue(struct node* x) {
+    queue[rear++] = x;
+}
+
+struct node* dequeue() {
+    return queue[front++];
+}
+
+int isEmpty() {
+    return front == rear;
+}
+
+void levelOrder(struct node* root) {
+    if (root == NULL) return;
+
+    enqueue(root);
+
+    while (!isEmpty()) {
+        int size = rear - front;
+
+        printf("[");
+        for (int i = 0; i < size; i++) {
+            struct node* temp = dequeue();
+            printf("%d", temp->data);
+
+            if (i < size - 1) printf(",");
+
+            if (temp->left) enqueue(temp->left);
+            if (temp->right) enqueue(temp->right);
+        }
+        printf("]");
+    }
+}
+
+int main() {
+    struct node* root = createNode(3);
+    root->left = createNode(9);
+    root->right = createNode(20);
+    root->right->left = createNode(15);
+    root->right->right = createNode(7);
+
+    levelOrder(root);
+    return 0;
+}

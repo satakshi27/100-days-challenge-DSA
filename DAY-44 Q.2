@@ -1,0 +1,31 @@
+Q.2- Given a binary tree, return its preorder traversal (Root → Left → Right).
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *left, *right;
+};
+
+struct node* createNode(int val) {
+    struct node* temp = (struct node*)malloc(sizeof(struct node));
+    temp->data = val;
+    temp->left = temp->right = NULL;
+    return temp;
+}
+
+void preorder(struct node* root) {
+    if (root == NULL) return;
+    printf("%d ", root->data);
+    preorder(root->left);
+    preorder(root->right);
+}
+
+int main() {
+    struct node* root = createNode(1);
+    root->right = createNode(2);
+    root->right->left = createNode(3);
+
+    preorder(root);
+    return 0;
+}

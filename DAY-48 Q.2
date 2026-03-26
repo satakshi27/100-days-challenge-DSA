@@ -1,0 +1,40 @@
+Q.2- Given a binary tree, return the sum of all left leaf nodes.
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *left, *right;
+};
+
+struct node* createNode(int val) {
+    struct node* temp = (struct node*)malloc(sizeof(struct node));
+    temp->data = val;
+    temp->left = temp->right = NULL;
+    return temp;
+}
+
+int sumLeftLeaves(struct node* root) {
+    if (root == NULL) return 0;
+
+    int sum = 0;
+
+    if (root->left && root->left->left == NULL && root->left->right == NULL)
+        sum += root->left->data;
+
+    sum += sumLeftLeaves(root->left);
+    sum += sumLeftLeaves(root->right);
+
+    return sum;
+}
+
+int main() {
+    struct node* root = createNode(3);
+    root->left = createNode(9);
+    root->right = createNode(20);
+    root->right->left = createNode(15);
+    root->right->right = createNode(7);
+
+    printf("%d", sumLeftLeaves(root));
+    return 0;
+}

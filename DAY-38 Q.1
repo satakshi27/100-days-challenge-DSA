@@ -1,0 +1,101 @@
+Q.1- Implement a Deque (Double-Ended Queue) using an array. Support operations like push_front, push_back, pop_front, pop_back, front, back, empty, and size. Print results of required operations.
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX 1000
+
+int dq[MAX];
+int front = -1, rear = -1;
+
+bool isEmpty() {
+    return front == -1;
+}
+
+bool isFull() {
+    return (front == (rear + 1) % MAX);
+}
+
+void push_front(int x) {
+    if (isFull()) return;
+
+    if (isEmpty()) {
+        front = rear = 0;
+    } else {
+        front = (front - 1 + MAX) % MAX;
+    }
+    dq[front] = x;
+}
+
+void push_back(int x) {
+    if (isFull()) return;
+
+    if (isEmpty()) {
+        front = rear = 0;
+    } else {
+        rear = (rear + 1) % MAX;
+    }
+    dq[rear] = x;
+}
+
+void pop_front() {
+    if (isEmpty()) return;
+
+    if (front == rear) {
+        front = rear = -1;
+    } else {
+        front = (front + 1) % MAX;
+    }
+}
+
+void pop_back() {
+    if (isEmpty()) return;
+
+    if (front == rear) {
+        front = rear = -1;
+    } else {
+        rear = (rear - 1 + MAX) % MAX;
+    }
+}
+
+int getFront() {
+    if (isEmpty()) return -1;
+    return dq[front];
+}
+
+int getBack() {
+    if (isEmpty()) return -1;
+    return dq[rear];
+}
+
+int size() {
+    if (isEmpty()) return 0;
+    if (rear >= front) return rear - front + 1;
+    return MAX - front + rear + 1;
+}
+
+void display() {
+    if (isEmpty()) return;
+
+    int i = front;
+    while (1) {
+        printf("%d ", dq[i]);
+        if (i == rear) break;
+        i = (i + 1) % MAX;
+    }
+}
+
+int main() {
+    push_back(10);
+    push_back(20);
+    push_front(5);
+    pop_back();
+    push_back(30);
+
+    printf("%d\n", getFront());
+    printf("%d\n", getBack());
+    printf("%d\n", size());
+
+    display();
+
+    return 0;
+}

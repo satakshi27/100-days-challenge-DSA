@@ -1,0 +1,57 @@
+Q.1- Perform level order traversal (BFS) of a binary tree and print nodes level by level.
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *left, *right;
+};
+
+struct node* createNode(int val) {
+    struct node* temp = (struct node*)malloc(sizeof(struct node));
+    temp->data = val;
+    temp->left = temp->right = NULL;
+    return temp;
+}
+
+struct node* queue[1000];
+int front = 0, rear = 0;
+
+void enqueue(struct node* x) {
+    queue[rear++] = x;
+}
+
+struct node* dequeue() {
+    return queue[front++];
+}
+
+int isEmpty() {
+    return front == rear;
+}
+
+void levelOrder(struct node* root) {
+    if (root == NULL) return;
+
+    enqueue(root);
+
+    while (!isEmpty()) {
+        struct node* temp = dequeue();
+        printf("%d ", temp->data);
+
+        if (temp->left)
+            enqueue(temp->left);
+        if (temp->right)
+            enqueue(temp->right);
+    }
+}
+
+int main() {
+    struct node* root = createNode(1);
+    root->left = createNode(2);
+    root->right = createNode(3);
+    root->left->left = createNode(4);
+    root->left->right = createNode(5);
+
+    levelOrder(root);
+    return 0;
+}

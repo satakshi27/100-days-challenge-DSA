@@ -1,0 +1,100 @@
+Q.2-Design and implement a Circular Double Ended Queue (Deque) using an array. Support operations: insertFront, insertLast, deleteFront, deleteLast, getFront, getRear, isEmpty, and isFull.
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX 1000
+
+int deque[MAX];
+int front = -1, rear = -1, size;
+
+void init(int k) {
+    size = k;
+    front = rear = -1;
+}
+
+bool isEmpty() {
+    return front == -1;
+}
+
+bool isFull() {
+    return (front == (rear + 1) % size);
+}
+
+bool insertFront(int value) {
+    if (isFull()) return false;
+
+    if (isEmpty()) {
+        front = rear = 0;
+    } else {
+        front = (front - 1 + size) % size;
+    }
+
+    deque[front] = value;
+    return true;
+}
+
+bool insertLast(int value) {
+    if (isFull()) return false;
+
+    if (isEmpty()) {
+        front = rear = 0;
+    } else {
+        rear = (rear + 1) % size;
+    }
+
+    deque[rear] = value;
+    return true;
+}
+
+bool deleteFront() {
+    if (isEmpty()) return false;
+
+    if (front == rear) {
+        front = rear = -1;
+    } else {
+        front = (front + 1) % size;
+    }
+
+    return true;
+}
+
+bool deleteLast() {
+    if (isEmpty()) return false;
+
+    if (front == rear) {
+        front = rear = -1;
+    } else {
+        rear = (rear - 1 + size) % size;
+    }
+
+    return true;
+}
+
+int getFront() {
+    if (isEmpty()) return -1;
+    return deque[front];
+}
+
+int getRear() {
+    if (isEmpty()) return -1;
+    return deque[rear];
+}
+
+int main() {
+    init(3);
+
+    insertLast(1);
+    insertLast(2);
+    insertFront(3);
+    insertFront(4);
+
+    printf("%d\n", getRear());
+    printf("%s\n", isFull() ? "true" : "false");
+
+    deleteLast();
+    insertFront(4);
+
+    printf("%d\n", getFront());
+
+    return 0;
+}

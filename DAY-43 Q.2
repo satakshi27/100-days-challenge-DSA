@@ -1,0 +1,31 @@
+Q.2- Given a binary tree, return its inorder traversal (Left → Root → Right).
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *left, *right;
+};
+
+struct node* createNode(int val) {
+    struct node* temp = (struct node*)malloc(sizeof(struct node));
+    temp->data = val;
+    temp->left = temp->right = NULL;
+    return temp;
+}
+
+void inorder(struct node* root) {
+    if (root == NULL) return;
+    inorder(root->left);
+    printf("%d ", root->data);
+    inorder(root->right);
+}
+
+int main() {
+    struct node* root = createNode(1);
+    root->right = createNode(2);
+    root->right->left = createNode(3);
+
+    inorder(root);
+    return 0;
+}

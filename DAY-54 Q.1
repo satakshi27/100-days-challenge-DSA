@@ -1,0 +1,84 @@
+Q.1- Perform zigzag (spiral) level order traversal of a binary tree.
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;
+    struct node *left, *right;
+};
+
+struct node* createNode(int val) {
+    struct node* temp = (struct node*)malloc(sizeof(struct node));
+    temp->data = val;
+    temp->left = temp->right = NULL;
+    return temp;
+}
+
+struct node* queue[1000];
+int front = 0, rear = 0;
+
+void enqueue(struct node* x) {
+    queue[rear++] = x;
+}
+
+struct node* dequeue() {
+    return queue[front++];
+}
+
+int isEmpty() {
+    return front == rear;
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+
+    int arr[n];
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+
+    if (n == 0 || arr[0] == -1) return 0;
+
+    struct node* nodes[n];
+
+    for (int i = 0; i < n; i++) {
+        if (arr[i] == -1)
+            nodes[i] = NULL;
+        else
+            nodes[i] = createNode(arr[i]);
+    }
+
+    for (int i = 0; i < n; i++) {
+        if (nodes[i] != NULL) {
+            int l = 2*i + 1, r = 2*i + 2;
+            if (l < n) nodes[i]->left = nodes[l];
+            if (r < n) nodes[i]->right = nodes[r];
+        }
+    }
+
+    int leftToRight = 1;
+    enqueue(nodes[0]);
+
+    while (!isEmpty()) {
+        int size = rear - front;
+        int tempArr[size];
+
+        for (int i = 0; i < size; i++) {
+            struct node* temp = dequeue();
+
+            if (leftToRight)
+                tempArr[i] = temp->data;
+            else
+                tempArr[size - i - 1] = temp->data;
+
+            if (temp->left) enqueue(temp->left);
+            if (temp->right) enqueue(temp->right);
+        }
+
+        for (int i = 0; i < size; i++)
+            printf("%d ", tempArr[i]);
+
+        leftToRight = !leftToRight;
+    }
+
+    return 0;
+}

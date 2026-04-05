@@ -1,0 +1,36 @@
+Q.2- Build from inorder & postorder.
+#include <stdio.h>
+#include <stdlib.h>
+
+struct TreeNode{
+    int val;
+    struct TreeNode *left,*right;
+};
+
+struct TreeNode* newNode(int val){
+    struct TreeNode* n=(struct TreeNode*)malloc(sizeof(struct TreeNode));
+    n->val=val;
+    n->left=n->right=NULL;
+    return n;
+}
+
+int find(int in[],int s,int e,int val){
+    for(int i=s;i<=e;i++)
+        if(in[i]==val) return i;
+    return -1;
+}
+
+struct TreeNode* buildTree(int in[],int post[],int s,int e,int *pi){
+    if(s>e) return NULL;
+
+    struct TreeNode* root=newNode(post[(*pi)--]);
+
+    if(s==e) return root;
+
+    int idx=find(in,s,e,root->val);
+
+    root->right=buildTree(in,post,idx+1,e,pi);
+    root->left=buildTree(in,post,s,idx-1,pi);
+
+    return root;
+}

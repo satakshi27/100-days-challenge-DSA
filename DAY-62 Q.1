@@ -1,0 +1,49 @@
+Q.1- Build a graph with adjacency list representation. Use linked lists or dynamic arrays.
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node{
+    int data;
+    struct Node* next;
+};
+
+struct Node* createNode(int v){
+    struct Node* n=(struct Node*)malloc(sizeof(struct Node));
+    n->data=v;
+    n->next=NULL;
+    return n;
+}
+
+int main(){
+    int n,m;
+    scanf("%d",&n);
+    scanf("%d",&m);
+
+    struct Node* adj[n];
+    for(int i=0;i<n;i++) adj[i]=NULL;
+
+    for(int i=0;i<m;i++){
+        int u,v;
+        scanf("%d%d",&u,&v);
+
+        struct Node* t=createNode(v);
+        t->next=adj[u];
+        adj[u]=t;
+
+        struct Node* t2=createNode(u);
+        t2->next=adj[v];
+        adj[v]=t2;
+    }
+
+    for(int i=0;i<n;i++){
+        printf("%d: ",i);
+        struct Node* temp=adj[i];
+        while(temp){
+            printf("%d ",temp->data);
+            temp=temp->next;
+        }
+        printf("\n");
+    }
+
+    return 0;
+}

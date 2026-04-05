@@ -1,0 +1,38 @@
+Q.2- Return the minimum number of cameras needed to monitor all nodes of the tree.
+#include <stdio.h>
+#include <stdlib.h>
+
+struct TreeNode{
+    int val;
+    struct TreeNode *left,*right;
+};
+
+struct TreeNode* newNode(int val){
+    struct TreeNode* n=(struct TreeNode*)malloc(sizeof(struct TreeNode));
+    n->val=val;
+    n->left=n->right=NULL;
+    return n;
+}
+
+int cameras=0;
+
+int dfs(struct TreeNode* root){
+    if(!root) return 1;
+
+    int l=dfs(root->left);
+    int r=dfs(root->right);
+
+    if(l==0 || r==0){
+        cameras++;
+        return 2;
+    }
+
+    if(l==2 || r==2) return 1;
+
+    return 0;
+}
+
+int minCameraCover(struct TreeNode* root){
+    if(dfs(root)==0) cameras++;
+    return cameras;
+}

@@ -1,0 +1,39 @@
+Q.2- Convert to right-skewed list in preorder.
+#include <stdio.h>
+#include <stdlib.h>
+
+struct TreeNode{
+    int val;
+    struct TreeNode *left,*right;
+};
+
+struct TreeNode* newNode(int val){
+    struct TreeNode* n=(struct TreeNode*)malloc(sizeof(struct TreeNode));
+    n->val=val;
+    n->left=n->right=NULL;
+    return n;
+}
+
+void flatten(struct TreeNode* root){
+    if(!root) return;
+
+    flatten(root->left);
+    flatten(root->right);
+
+    struct TreeNode* temp = root->right;
+    root->right = root->left;
+    root->left = NULL;
+
+    struct TreeNode* curr = root;
+    while(curr->right)
+        curr = curr->right;
+
+    curr->right = temp;
+}
+
+void printList(struct TreeNode* root){
+    while(root){
+        printf("%d ",root->val);
+        root = root->right;
+    }
+}

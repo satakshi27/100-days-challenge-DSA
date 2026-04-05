@@ -1,0 +1,41 @@
+Q.2- Change connected same-color pixels using DFS.
+#include <stdio.h>
+
+int m,n;
+
+void dfs(int img[50][50], int r, int c, int old, int newc){
+    if(r<0 || c<0 || r>=m || c>=n) return;
+    if(img[r][c]!=old || img[r][c]==newc) return;
+
+    img[r][c]=newc;
+
+    dfs(img,r+1,c,old,newc);
+    dfs(img,r-1,c,old,newc);
+    dfs(img,r,c+1,old,newc);
+    dfs(img,r,c-1,old,newc);
+}
+
+int main(){
+    scanf("%d%d",&m,&n);
+
+    int img[50][50];
+    for(int i=0;i<m;i++)
+        for(int j=0;j<n;j++)
+            scanf("%d",&img[i][j]);
+
+    int sr,sc,color;
+    scanf("%d%d%d",&sr,&sc,&color);
+
+    int old=img[sr][sc];
+
+    if(old!=color)
+        dfs(img,sr,sc,old,color);
+
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++)
+            printf("%d ",img[i][j]);
+        printf("\n");
+    }
+
+    return 0;
+}

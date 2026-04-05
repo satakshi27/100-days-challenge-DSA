@@ -1,0 +1,74 @@
+Q.2- Given the root of a binary tree, imagine yourself standing on the right side of it, return the values of the nodes you can see ordered from top to bottom.
+#include <stdio.h>
+#include <stdlib.h>
+
+struct TreeNode{
+    int val;
+    struct TreeNode *left,*right;
+};
+
+struct TreeNode* newNode(int val){
+    struct TreeNode* n=(struct TreeNode*)malloc(sizeof(struct TreeNode));
+    n->val=val;
+    n->left=n->right=NULL;
+    return n;
+}
+
+struct TreeNode* build(int a[],int n){
+    if(n==0||a[0]==-1) return NULL;
+    struct TreeNode* root=newNode(a[0]);
+    struct TreeNode* q[n];
+    int f=0,r=0,i=1;
+    q[r++]=root;
+    while(i<n){
+        struct TreeNode* t=q[f++];
+        if(a[i]!=-1){
+            t->left=newNode(a[i]);
+            q[r++]=t->left;
+        }
+        i++;
+        if(i<n&&a[i]!=-1){
+            t->right=newNode(a[i]);
+            q[r++]=t->right;
+        }
+        i++;
+    }
+    return root;
+}
+
+int* rightSideView(struct TreeNode* root,int* returnSize){
+    int* res=(int*)malloc(100*sizeof(int));
+    *returnSize=0;
+    if(!root) return res;
+
+    struct TreeNode* q[100];
+    int f=0,r=0;
+    q[r++]=root;
+
+    while(f<r){
+        int s=r-f;
+        for(int i=0;i<s;i++){
+            struct TreeNode* t=q[f++];
+            if(i==s-1) res[(*returnSize)++]=t->val;
+            if(t->left) q[r++]=t->left;
+            if(t->right) q[r++]=t->right;
+        }
+    }
+    return res;
+}
+
+int main(){
+    int n;
+    scanf("%d",&n);
+    int a[n];
+    for(int i=0;i<n;i++) scanf("%d",&a[i]);
+
+    struct TreeNode* root=build(a,n);
+
+    int size;
+    int* ans=rightSideView(root,&size);
+
+    for(int i=0;i<size;i++) printf("%d ",ans[i]);
+
+    return 0;
+}

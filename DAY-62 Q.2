@@ -1,0 +1,39 @@
+Q.2- Check if all rooms can be visited (DFS).
+#include <stdio.h>
+
+void dfs(int rooms[1000][1000], int size[], int vis[], int i){
+    vis[i]=1;
+    for(int j=0;j<size[i];j++){
+        int key=rooms[i][j];
+        if(!vis[key])
+            dfs(rooms,size,vis,key);
+    }
+}
+
+int main(){
+    int n;
+    scanf("%d",&n);
+
+    int rooms[1000][1000];
+    int size[1000];
+
+    for(int i=0;i<n;i++){
+        scanf("%d",&size[i]);
+        for(int j=0;j<size[i];j++)
+            scanf("%d",&rooms[i][j]);
+    }
+
+    int vis[1000]={0};
+
+    dfs(rooms,size,vis,0);
+
+    for(int i=0;i<n;i++){
+        if(!vis[i]){
+            printf("false");
+            return 0;
+        }
+    }
+
+    printf("true");
+    return 0;
+}

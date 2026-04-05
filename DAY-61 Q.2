@@ -1,0 +1,35 @@
+Q.2- Count connected components using DFS.
+#include <stdio.h>
+
+int n;
+
+void dfs(int g[200][200], int vis[], int i){
+    vis[i]=1;
+    for(int j=0;j<n;j++){
+        if(g[i][j]==1 && !vis[j])
+            dfs(g,vis,j);
+    }
+}
+
+int main(){
+    scanf("%d",&n);
+
+    int g[200][200];
+    for(int i=0;i<n;i++)
+        for(int j=0;j<n;j++)
+            scanf("%d",&g[i][j]);
+
+    int vis[200]={0};
+    int count=0;
+
+    for(int i=0;i<n;i++){
+        if(!vis[i]){
+            dfs(g,vis,i);
+            count++;
+        }
+    }
+
+    printf("%d",count);
+
+    return 0;
+}

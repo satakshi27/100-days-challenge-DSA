@@ -1,0 +1,60 @@
+Q.2- Use BFS to spread rot level by level.
+#include <stdio.h>
+
+int main(){
+    int m,n;
+    scanf("%d%d",&m,&n);
+
+    int grid[10][10];
+    for(int i=0;i<m;i++)
+        for(int j=0;j<n;j++)
+            scanf("%d",&grid[i][j]);
+
+    int qx[100],qy[100];
+    int f=0,r=0;
+
+    int fresh=0;
+
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            if(grid[i][j]==2){
+                qx[r]=i;
+                qy[r]=j;
+                r++;
+            }
+            if(grid[i][j]==1) fresh++;
+        }
+    }
+
+    int time=0;
+    int dx[4]={1,-1,0,0};
+    int dy[4]={0,0,1,-1};
+
+    while(f<r && fresh>0){
+        int size=r-f;
+        for(int i=0;i<size;i++){
+            int x=qx[f];
+            int y=qy[f];
+            f++;
+
+            for(int k=0;k<4;k++){
+                int nx=x+dx[k];
+                int ny=y+dy[k];
+
+                if(nx>=0 && ny>=0 && nx<m && ny<n && grid[nx][ny]==1){
+                    grid[nx][ny]=2;
+                    qx[r]=nx;
+                    qy[r]=ny;
+                    r++;
+                    fresh--;
+                }
+            }
+        }
+        time++;
+    }
+
+    if(fresh>0) printf("-1");
+    else printf("%d",time);
+
+    return 0;
+}

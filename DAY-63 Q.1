@@ -1,0 +1,59 @@
+Q.1- Perform DFS starting from a given source vertex using recursion.
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node{
+    int data;
+    struct Node* next;
+};
+
+struct Node* createNode(int v){
+    struct Node* n=(struct Node*)malloc(sizeof(struct Node));
+    n->data=v;
+    n->next=NULL;
+    return n;
+}
+
+void dfs(int v, struct Node* adj[], int vis[]){
+    vis[v]=1;
+    printf("%d ",v);
+
+    struct Node* temp=adj[v];
+    while(temp){
+        if(!vis[temp->data])
+            dfs(temp->data,adj,vis);
+        temp=temp->next;
+    }
+}
+
+int main(){
+    int n,m;
+    scanf("%d",&n);
+    scanf("%d",&m);
+
+    struct Node* adj[n];
+    for(int i=0;i<n;i++) adj[i]=NULL;
+
+    for(int i=0;i<m;i++){
+        int u,v;
+        scanf("%d%d",&u,&v);
+
+        struct Node* t=createNode(v);
+        t->next=adj[u];
+        adj[u]=t;
+
+        struct Node* t2=createNode(u);
+        t2->next=adj[v];
+        adj[v]=t2;
+    }
+
+    int s;
+    scanf("%d",&s);
+
+    int vis[n];
+    for(int i=0;i<n;i++) vis[i]=0;
+
+    dfs(s,adj,vis);
+
+    return 0;
+}

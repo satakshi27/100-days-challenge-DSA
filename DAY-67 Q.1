@@ -1,0 +1,58 @@
+Q.1-Print topological ordering of a Directed Acyclic Graph (DAG) using DFS.
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int v;
+    struct Node* next;
+} Node;
+
+Node* adj[100005];
+int visited[100005], stack[100005];
+int top = -1;
+
+void addEdge(int u, int v) {
+    Node* n = (Node*)malloc(sizeof(Node));
+    n->v = v;
+    n->next = adj[u];
+    adj[u] = n;
+}
+
+void dfs(int v) {
+    visited[v] = 1;
+    Node* temp = adj[v];
+
+    while (temp) {
+        if (!visited[temp->v])
+            dfs(temp->v);
+        temp = temp->next;
+    }
+
+    stack[++top] = v;
+}
+
+int main() {
+    int V, E;
+    scanf("%d %d", &V, &E);
+
+    for (int i = 0; i < V; i++) {
+        adj[i] = NULL;
+        visited[i] = 0;
+    }
+
+    int u, v;
+    for (int i = 0; i < E; i++) {
+        scanf("%d %d", &u, &v);
+        addEdge(u, v);
+    }
+
+    for (int i = 0; i < V; i++) {
+        if (!visited[i])
+            dfs(i);
+    }
+
+    while (top != -1)
+        printf("%d ", stack[top--]);
+
+    return 0;
+}

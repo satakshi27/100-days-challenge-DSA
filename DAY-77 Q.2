@@ -1,0 +1,71 @@
+Q.2- Given n servers and connections, find all critical connections (bridges) in the network.
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 100005
+
+struct Edge {
+    int to;
+    struct Edge* next;
+};
+
+struct Edge* adj[MAX];
+int disc[MAX], low[MAX], visited[MAX];
+int time = 0;
+
+// Add edge
+void addEdge(int u, int v) {
+    struct Edge* e1 = (struct Edge*)malloc(sizeof(struct Edge));
+    e1->to = v;
+    e1->next = adj[u];
+    adj[u] = e1;
+
+    struct Edge* e2 = (struct Edge*)malloc(sizeof(struct Edge));
+    e2->to = u;
+    e2->next = adj[v];
+    adj[v] = e2;
+}
+
+// DFS function
+void dfs(int u, int parent) {
+    visited[u] = 1;
+    disc[u] = low[u] = ++time;
+
+    struct Edge* temp = adj[u];
+    while (temp) {
+        int v = temp->to;
+
+        if (!visited[v]) {
+            dfs(v, u);
+            low[u] = (low[u] < low[v]) ? low[u] : low[v];
+
+            // Bridge condition
+            if (low[v] > disc[u]) {
+                printf("[%d,%d]\n", u, v);
+            }
+        }
+        else if (v != parent) {
+            low[u] = (low[u] < disc[v]) ? low[u] : disc[v];
+        }
+
+        temp = temp->next;
+    }
+}
+
+int main() {
+    int n, m, u, v;
+    scanf("%d %d", &n, &m);
+
+    for (int i = 0; i < m; i++) {
+        scanf("%d %d", &u, &v);
+        addEdge(u, v);
+    }
+
+    for (int i = 0; i < n; i++) {
+        if (!visited[i]) {
+            dfs(i, -1);
+        }
+    }
+
+    return 0;
+}

@@ -1,0 +1,38 @@
+Q.1 Given an undirected graph with n nodes and m edges, find the number of connected components using DFS and BFS
+#include <stdio.h>
+
+#define MAX 100
+
+int adj[MAX][MAX], visited[MAX];
+int n;
+
+void dfs(int v) {
+    visited[v] = 1;
+    for(int i = 1; i <= n; i++) {
+        if(adj[v][i] == 1 && !visited[i]) {
+            dfs(i);
+        }
+    }
+}
+
+int main() {
+    int m, u, v;
+    scanf("%d %d", &n, &m);
+
+    for(int i = 0; i < m; i++) {
+        scanf("%d %d", &u, &v);
+        adj[u][v] = adj[v][u] = 1;
+    }
+
+    int count = 0;
+
+    for(int i = 1; i <= n; i++) {
+        if(!visited[i]) {
+            dfs(i);
+            count++;
+        }
+    }
+
+    printf("%d\n", count);
+    return 0;
+}

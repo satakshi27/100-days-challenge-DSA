@@ -1,0 +1,70 @@
+Q.2- Given a weighted undirected graph with n vertices and m edges, find the total weight of the Minimum Spanning Tree (MST) using Prim’s Algorithm.
+#include <stdio.h>
+#include <limits.h>
+
+#define MAX 100
+
+int graph[MAX][MAX] = {0};
+int n;
+
+// Find minimum key vertex
+int minKey(int key[], int mstSet[]) {
+    int min = INT_MAX, min_index = -1;
+
+    for (int v = 1; v <= n; v++) {
+        if (!mstSet[v] && key[v] < min) {
+            min = key[v];
+            min_index = v;
+        }
+    }
+    return min_index;
+}
+
+int primMST() {
+    int parent[MAX];
+    int key[MAX];
+    int mstSet[MAX];
+
+    for (int i = 1; i <= n; i++) {
+        key[i] = INT_MAX;
+        mstSet[i] = 0;
+    }
+
+    key[1] = 0;
+    parent[1] = -1;
+
+    for (int count = 1; count < n; count++) {
+        int u = minKey(key, mstSet);
+
+        if (u == -1) break; // safety
+
+        mstSet[u] = 1;
+
+        for (int v = 1; v <= n; v++) {
+            if (graph[u][v] && !mstSet[v] && graph[u][v] < key[v]) {
+                parent[v] = u;
+                key[v] = graph[u][v];
+            }
+        }
+    }
+
+    int total = 0;
+    for (int i = 2; i <= n; i++) {
+        total += key[i];
+    }
+
+    return total;
+}
+
+int main() {
+    int m, u, v, w;
+    scanf("%d %d", &n, &m);
+
+    for (int i = 0; i < m; i++) {
+        scanf("%d %d %d", &u, &v, &w);
+        graph[u][v] = graph[v][u] = w;
+    }
+
+    printf("%d\n", primMST());
+    return 0;
+}

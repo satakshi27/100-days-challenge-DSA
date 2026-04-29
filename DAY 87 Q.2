@@ -1,0 +1,35 @@
+Q.2- Koko has banana piles and h hours. Find the minimum eating speed k bananas/hour so she can finish all bananas within h hours.
+long long hoursNeeded(int* piles, int pilesSize, int k)
+{
+    long long hours = 0;
+    int i;
+
+    for(i = 0; i < pilesSize; i++)
+        hours += (piles[i] + k - 1) / k;
+
+    return hours;
+}
+
+int minEatingSpeed(int* piles, int pilesSize, int h)
+{
+    int left = 1, right = 0, i, ans = 0;
+
+    for(i = 0; i < pilesSize; i++)
+        if(piles[i] > right)
+            right = piles[i];
+
+    while(left <= right)
+    {
+        int mid = left + (right - left) / 2;
+
+        if(hoursNeeded(piles, pilesSize, mid) <= h)
+        {
+            ans = mid;
+            right = mid - 1;
+        }
+        else
+            left = mid + 1;
+    }
+
+    return ans;
+}

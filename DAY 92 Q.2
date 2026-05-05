@@ -1,0 +1,50 @@
+Q.2- Find the k-th largest element without sorting.
+#include <stdio.h>
+
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = low;
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] <= pivot) {
+            int t = arr[i];
+            arr[i] = arr[j];
+            arr[j] = t;
+            i++;
+        }
+    }
+
+    int t = arr[i];
+    arr[i] = arr[high];
+    arr[high] = t;
+
+    return i;
+}
+
+int quickSelect(int arr[], int low, int high, int k) {
+    int target = high - k + 1;
+
+    while (low <= high) {
+        int pi = partition(arr, low, high);
+
+        if (pi == target) return arr[pi];
+        else if (pi < target) low = pi + 1;
+        else high = pi - 1;
+    }
+
+    return -1;
+}
+
+int main() {
+    int n, k;
+    scanf("%d", &n);
+
+    int arr[n];
+    for (int i = 0; i < n; i++) scanf("%d", &arr[i]);
+
+    scanf("%d", &k);
+
+    printf("%d", quickSelect(arr, 0, n - 1, k));
+
+    return 0;
+}

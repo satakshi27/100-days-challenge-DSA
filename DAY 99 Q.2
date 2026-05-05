@@ -1,0 +1,34 @@
+Q.2- 
+#include <stdlib.h>
+
+typedef struct {
+    int pos;
+    double time;
+} Car;
+
+int cmp(const void* a, const void* b) {
+    return ((Car*)b)->pos - ((Car*)a)->pos;
+}
+
+int carFleet(int target, int* position, int positionSize, int* speed, int speedSize) {
+    Car* cars = (Car*)malloc(positionSize * sizeof(Car));
+
+    for (int i = 0; i < positionSize; i++) {
+        cars[i].pos = position[i];
+        cars[i].time = (double)(target - position[i]) / speed[i];
+    }
+
+    qsort(cars, positionSize, sizeof(Car), cmp);
+
+    int fleets = 0;
+    double curr = 0;
+
+    for (int i = 0; i < positionSize; i++) {
+        if (cars[i].time > curr) {
+            fleets++;
+            curr = cars[i].time;
+        }
+    }
+
+    return fleets;
+}

@@ -1,0 +1,39 @@
+Q.2- Split array into k contiguous subarrays to minimize the largest subarray sum.
+int canSplit(int* nums, int n, int k, int maxSum) {
+    int count = 1, sum = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (sum + nums[i] > maxSum) {
+            count++;
+            sum = nums[i];
+        } else {
+            sum += nums[i];
+        }
+    }
+
+    return count <= k;
+}
+
+int splitArray(int* nums, int numsSize, int k) {
+    int left = 0, right = 0;
+
+    for (int i = 0; i < numsSize; i++) {
+        if (nums[i] > left) left = nums[i];
+        right += nums[i];
+    }
+
+    int ans = right;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (canSplit(nums, numsSize, k, mid)) {
+            ans = mid;
+            right = mid - 1;
+        } else {
+            left = mid + 1;
+        }
+    }
+
+    return ans;
+}
